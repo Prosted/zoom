@@ -4,7 +4,7 @@
   "description": "Nomad Zoom clone coding course",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon"
+    "dev": "nodemon -L"
   },
   "author": "PSC",
   "license": "ISC",
@@ -14,6 +14,7 @@
     "@babel/node": "^7.14.9",
     "@babel/preset-env": "^7.15.0",
     "express": "^4.17.1",
-    "nodemon": "^2.0.12"
+    "nodemon": "^2.0.12",
+    "pug": "^3.0.2"
   }
 }
