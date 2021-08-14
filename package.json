@@ -1,0 +1,19 @@
+{
+  "name": "zoom",
+  "version": "1.0.0",
+  "description": "Nomad Zoom clone coding course",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon"
+  },
+  "author": "PSC",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/cli": "^7.14.8",
+    "@babel/core": "^7.15.0",
+    "@babel/node": "^7.14.9",
+    "@babel/preset-env": "^7.15.0",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.12"
+  }
+}
