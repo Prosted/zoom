@@ -16,10 +16,17 @@ app.get("/*", (req,res)=>{return res.redirect("/")});
 const server = http.createServer(app);
 const wss=new WebSocket.Server({server});
 
-const handleConnection = (socket) => {
-    console.log(socket);
-}
+wss.on("connection", (socket) => {
+    console.log("Conneted to Server ✅");
+    socket.on("close", ()=>{
+        console.log("Disconnect to Server");
+    });
+    socket.on("message", (message)=>{
+        console.log(`I got this on server : ${message}`);
+    });
+    socket.send("Hello World!!!");
+});
 
-wss.on("connection", handleConnection);
+const handleListen = () => console.log(`Listening on http://localhost:4000`);
 
-server.listen(3000, ()=>{console.log("server is open!")});
+server.listen(4000, handleListen);
