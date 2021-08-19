@@ -8,5 +8,9 @@ html(lang="en")
         title Nomad Zoom Clone
     body 
         main
+            div#welcome
+                form(action="")
+                    input(type="text", placeholder="Enter Room", required)
+                    button Enter 
         script(src="/socket.io/socket.io.js")
         script(src="/public/js/app.js") 

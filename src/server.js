@@ -18,7 +18,12 @@ const httpServer = http.createServer(app);
 const io = SocketIO(httpServer);
 
 io.on("connect", (socket)=>{
-    console.log(socket);
+    socket.on("enter-room", (msg, done)=>{
+        console.log(msg);
+        setTimeout(()=>{
+            done();
+        },5000);
+    })
 })
 
 
