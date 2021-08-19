@@ -8,12 +8,5 @@ html(lang="en")
         title Nomad Zoom Clone
     body 
         main
-            form#nicknameForm
-                input(type="text", placeholder="Send Nickname", required)
-                button Send
-            form#messageForm
-                input(type="text", placeholder="Send Message", required)
-                button Send
-            ul#messages 
-
+        script(src="/socket.io/socket.io.js")
         script(src="/public/js/app.js") 

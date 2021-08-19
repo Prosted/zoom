@@ -1,11 +1,9 @@
 import http from "http";
-import WebSocket from "ws";
+// import WebSocket from "ws";
+import SocketIO from "socket.io";
 import express from "express";
-import { Socket } from "dgram";
 
 const app = express();
-
-const sockets = [];
 
 app.set("view engine", "pug");
 app.set("views", __dirname + "/views");
@@ -15,9 +13,19 @@ app.get("/", (req,res)=>{
 });
 app.get("/*", (req,res)=>{return res.redirect("/")});
 
-const server = http.createServer(app);
-const wss=new WebSocket.Server({server});
 
+const httpServer = http.createServer(app);
+const io = SocketIO(httpServer);
+
+io.on("connect", (socket)=>{
+    console.log(socket);
+})
+
+
+/*
+const wss=new WebSocket.Server({httpServer});
+
+const sockets = [];
 wss.on("connection", (socket) => {
     sockets.push(socket);
     socket["nickname"] = "Anon";
@@ -37,8 +45,8 @@ wss.on("connection", (socket) => {
         }
     });
 });
-
+*/
 
 const handleListen = () => console.log(`Listening on http://localhost:4000`);
 
-server.listen(4000, handleListen);
+httpServer.listen(4000, handleListen);
