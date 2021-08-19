@@ -4,6 +4,7 @@ import express from "express";
 
 const app = express();
 
+const messages = [];
 
 app.set("view engine", "pug");
 app.set("views", __dirname + "/views");
@@ -17,14 +18,14 @@ const server = http.createServer(app);
 const wss=new WebSocket.Server({server});
 
 wss.on("connection", (socket) => {
+    messages.push(socket);
     console.log("Conneted to Server ✅");
     socket.on("close", ()=>{
         console.log("Disconnect to Server");
     });
-    socket.on("message", (message)=>{
-        console.log(`I got this on server : ${message}`);
+    socket.on("message", (message) => {
+        messages.forEach((aMessage) => {aMessage.send(message.toString())});
     });
-    socket.send("Hello World!!!");
 });
 
 const handleListen = () => console.log(`Listening on http://localhost:4000`);
