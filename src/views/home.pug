@@ -8,9 +8,14 @@ html(lang="en")
         title Nomad Zoom Clone
     body 
         main
+            h1#roomName
             div#welcome
                 form(action="")
                     input(type="text", placeholder="Enter Room", required)
-                    button Enter 
+                    button Enter
+            div#message
+                form(action="")
+                    input(type="text", placeholder="Message here", required)
+                    button Send
         script(src="/socket.io/socket.io.js")
         script(src="/public/js/app.js") 

@@ -18,11 +18,15 @@ const httpServer = http.createServer(app);
 const io = SocketIO(httpServer);
 
 io.on("connect", (socket)=>{
-    socket.on("enter-room", (msg, done)=>{
-        console.log(msg);
-        setTimeout(()=>{
-            done();
-        },5000);
+    socket.onAny((event)=>{
+        console.log(`server event : ${event}`);
+    });
+    socket.on("enter-room", (room, done)=>{
+        console.log(socket.id);
+        console.log(socket.rooms);
+        socket.join(room);
+        console.log(socket.rooms);
+        done();
     })
 })
 
