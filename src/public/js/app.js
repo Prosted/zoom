@@ -3,6 +3,7 @@ const socket = io();
 const roomName = document.querySelector("#roomName");
 const welcome = document.querySelector("#welcome");
 const welcomeForm = welcome.querySelector("form");
+const roomList = welcome.querySelector("#roomList");
 const message = document.querySelector("#message");
 const messageForm = message.querySelector("#messageForm");
 const nicknameForm = message.querySelector("#nickname");
@@ -62,5 +63,17 @@ socket.on("bye", (user)=>{
 socket.on("new_message", (msg)=>{
     addMessage(msg);
 });
+
+socket.on("room-change", (rooms)=>{
+    roomList.innerHTML="";
+    if (rooms.length ===0 ){
+        return;
+    }
+    rooms.forEach(room => {
+        const li= document.createElement("li");
+        li.innerText=room;
+        roomList.appendChild(li);
+    });
+})
 
 welcomeForm.addEventListener("submit", handleSubmit);

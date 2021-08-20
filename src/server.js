@@ -42,12 +42,16 @@ io.on("connect", (socket)=>{
         socket.join(room);
         done();
         socket.to(room).emit("welcome", socket["nickname"]);
+        io.sockets.emit("room-change", publicRooms());
     });
     socket.on("disconnecting", ()=>{
         socket.rooms.forEach(room => {
             socket.to(room).emit("bye", socket["nickname"]);
         });
     });
+    socket.on("disconnect", ()=>{
+        io.sockets.emit("room-change", publicRooms());
+    })
     socket.on("new_message", (msg, room, done)=>{
         socket.to(room).emit("new_message", `${socket["nickname"]} : ${msg}`);
         done();
