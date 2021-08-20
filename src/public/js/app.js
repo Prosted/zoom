@@ -4,7 +4,8 @@ const roomName = document.querySelector("#roomName");
 const welcome = document.querySelector("#welcome");
 const welcomeForm = welcome.querySelector("form");
 const message = document.querySelector("#message");
-const messageForm = message.querySelector("form");
+const messageForm = message.querySelector("#messageForm");
+const nicknameForm = message.querySelector("#nickname");
 const messageList = document.querySelector("#messageList");
 
 message.hidden = true;
@@ -13,6 +14,16 @@ const showRoom = () => {
     welcome.hidden=true;
     message.hidden=false;
     messageForm.addEventListener("submit", handleMessageSubmit);
+    nicknameForm.addEventListener("submit", handleNicknameSubmit);
+}
+
+const handleNicknameSubmit = (event) => {
+    event.preventDefault();
+    const input = nicknameForm.querySelector("input");
+    const value = input.value;
+    socket.emit("nickname", value);
+    input.value="";
+
 }
 
 const handleMessageSubmit = (event) =>{
@@ -40,16 +51,15 @@ const addMessage = (msg) => {
     messageList.appendChild(li);
 }
 
-socket.on("welcome", ()=>{
-    addMessage("Someone joined");
+socket.on("welcome", (user)=>{
+    addMessage(`${user} joined`);
 });
 
-socket.on("bye", ()=>{
-    addMessage("someong left ㅠㅠ");
+socket.on("bye", (user)=>{
+    addMessage(`${user} left ㅠㅠ`);
 })
 
 socket.on("new_message", (msg)=>{
-    console.log("app.js:"+msg);
     addMessage(msg);
 });
 
