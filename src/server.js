@@ -22,10 +22,19 @@ io.on("connect", (socket)=>{
         console.log(`server event : ${event}`);
     });
     socket.on("enter-room", (room, done)=>{
-        console.log(socket.id);
-        console.log(socket.rooms);
         socket.join(room);
-        console.log(socket.rooms);
+        done();
+        socket.to(room).emit("welcome");
+    });
+    socket.on("disconnecting", ()=>{
+        socket.rooms.forEach(room => {
+            socket.to(room).emit("bye");
+        });
+    });
+    socket.on("new_message", (msg, room, done)=>{
+        console.log(room);
+        console.log(msg);
+        socket.to(room).emit("new_message", msg);
         done();
     })
 })
