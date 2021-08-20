@@ -17,6 +17,22 @@ app.get("/*", (req,res)=>{return res.redirect("/")});
 const httpServer = http.createServer(app);
 const io = SocketIO(httpServer);
 
+function publicRooms(){
+    const {
+        sockets:{
+            adapter :{sids, rooms},
+        }
+    } = io;
+    const publicRooms = [];
+    rooms.forEach((_, key)=>{
+        if(sids.get(key)===undefined){
+            publicRooms.push(key);
+        }
+    });
+    return publicRooms;
+}
+
+
 io.on("connect", (socket)=>{
     socket["nickname"]="Anony";
     socket.onAny((event)=>{
