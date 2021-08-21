@@ -1,6 +1,7 @@
 import http from "http";
 // import WebSocket from "ws";
-import SocketIO from "socket.io";
+import { instrument } from "@socket.io/admin-ui";
+import {Server} from "socket.io";
 import express from "express";
 
 const app = express();
@@ -15,7 +16,16 @@ app.get("/*", (req,res)=>{return res.redirect("/")});
 
 
 const httpServer = http.createServer(app);
-const io = SocketIO(httpServer);
+const io = new Server(httpServer, {
+    cors: {
+      origin: ["https://admin.socket.io"],
+      credentials: true
+}});
+
+instrument(io, {
+    auth: false
+});
+  
 
 function publicRooms(){
     const {
@@ -47,7 +57,7 @@ io.on("connect", (socket)=>{
     socket.on("enter-room", (room, done)=>{
         socket.join(room);
         done();
-        // socket.emit("welcome", socket["nickname"], countRoom(room));
+        socket.emit("welcome", socket["nickname"], countRoom(room));
         socket.to(room).emit("welcome", socket["nickname"], countRoom(room));
         io.sockets.emit("room-change", publicRooms());
     });

@@ -10,7 +10,7 @@ const roomName = message.querySelector("#roomName");
 const messageList = message.querySelector("#messageList");
 
 
-const roomTitle;
+let roomTitle;
 message.hidden = true;
 
 const showRoom = () => {
@@ -41,6 +41,7 @@ const handleMessageSubmit = (event) =>{
 
 const handleSubmit = (event) => {   
     event.preventDefault();
+    console.log("hey");
     const input = welcomeForm.querySelector("input");
     const {value} = input;
     roomTitle=value;
