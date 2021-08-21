@@ -8,14 +8,14 @@ html(lang="en")
         title Nomad Zoom Clone
     body 
         main
-            h1#roomName
-            ul#messageList
             div#welcome
                 form(action="")
                     input(type="text", placeholder="Enter Room", required)
                     button Enter
                 ul#roomList
             div#message
+                h1#roomName
+                ul#messageList
                 form(action="")#nickname
                     input(type="text", placeholder="Nickname here", required)
                     button Save

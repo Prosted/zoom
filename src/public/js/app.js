@@ -1,14 +1,16 @@
 const socket = io();
 
-const roomName = document.querySelector("#roomName");
 const welcome = document.querySelector("#welcome");
 const welcomeForm = welcome.querySelector("form");
 const roomList = welcome.querySelector("#roomList");
 const message = document.querySelector("#message");
 const messageForm = message.querySelector("#messageForm");
 const nicknameForm = message.querySelector("#nickname");
-const messageList = document.querySelector("#messageList");
+const roomName = message.querySelector("#roomName");
+const messageList = message.querySelector("#messageList");
 
+
+const roomTitle;
 message.hidden = true;
 
 const showRoom = () => {
@@ -41,7 +43,8 @@ const handleSubmit = (event) => {
     event.preventDefault();
     const input = welcomeForm.querySelector("input");
     const {value} = input;
-    roomName.innerText = value;
+    roomTitle=value;
+    roomName.innerText = roomTitle;
     socket.emit("enter-room", value, showRoom);
     input.value="";
 }
@@ -52,11 +55,13 @@ const addMessage = (msg) => {
     messageList.appendChild(li);
 }
 
-socket.on("welcome", (user)=>{
+socket.on("welcome", (user, count)=>{
+    roomName.innerText = `${roomTitle} (${count})`;
     addMessage(`${user} joined`);
 });
 
-socket.on("bye", (user)=>{
+socket.on("bye", (user, count)=>{
+    roomName.innerText = `${roomTitle} (${count})`;
     addMessage(`${user} left ㅠㅠ`);
 })
 
