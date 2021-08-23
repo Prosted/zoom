@@ -8,10 +8,15 @@ html(lang="en")
         title Nomad Zoom Clone
     body 
         main
-            div#myStream
-                video(autoplay, playsinline, muted, width="400px", height="400px")#video
-                button#muteBtn Mute
-                button#cameraBtn Camera OFF
-                select#cameraSelect  
+            div#welcome
+                form
+                    input(type="text", placeholder="Enter Room", required)
+                    button Enter
+            div#call
+                div#myStream
+                    video(autoplay, playsinline, muted, width="400px", height="400px")#video
+                    button#muteBtn Mute
+                    button#cameraBtn Camera OFF
+                    select#cameraSelect  
         script(src="/socket.io/socket.io.js")
         script(src="/public/js/app.js") 

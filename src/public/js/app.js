@@ -10,9 +10,9 @@ let myStream;
 let muted = false;
 let cameraOff= false;
 
-
 const getCameras = async () => {
     try{
+        cameraSelect.innerHTML="";
         const devices = await navigator.mediaDevices.enumerateDevices();
         const cameras = devices.filter((device)=>(device.kind === "videoinput")).reverse();
         const currentCamera = myStream.getVideoTracks()[0]; 
@@ -41,15 +41,12 @@ async function getStream(deviceId){
     };
     try{
         myStream = await navigator.mediaDevices.getUserMedia(deviceId ? defaultCamera : selectedCamera);
-        if(!deviceId){
-            await getCameras();
-        }
+        await getCameras();
         video.srcObject = myStream;
     }catch(e){
         console.log(e);
     }
 }
-
 
 const handleMute = () => {
     myStream.getAudioTracks().forEach((track) => (
@@ -85,3 +82,28 @@ cameraBtn.addEventListener("click", handleCamera);
 cameraSelect.addEventListener("input", handleSelect);
 
 getStream();
+
+const welcome = document.querySelector("#welcome");
+const call = document.querySelector("#call");
+const welcomeForm = welcome.querySelector("form");
+
+call.hidden=true;
+
+const showCall = () =>{
+    welcome.hidden=true;
+    call.hidden=false;
+    getStream();
+}
+
+const handleSubmit = (event) => {
+    event.preventDefault();
+    const input = welcome.querySelector("input");
+    socket.emit("enter-room", input.value, showCall);
+    input.value="";
+}
+
+socket.on("welcome", ()=>{
+    console.log("someone joined");
+})
+
+welcomeForm.addEventListener("submit", handleSubmit);

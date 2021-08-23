@@ -18,6 +18,14 @@ app.get("/*", (req,res)=>{return res.redirect("/")});
 const httpServer = http.createServer(app);
 const io = SocketIO(httpServer);
 
+io.on("connect", (socket)=>{
+    socket.on("enter-room", (roomName, done)=>{
+        socket.join(roomName);
+        done();
+        socket.to(roomName).emit("welcome");
+    });
+})
+
 const handleListen = () => console.log(`Listening on http://localhost:4000`);
 
 httpServer.listen(4000, handleListen);
