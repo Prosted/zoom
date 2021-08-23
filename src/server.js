@@ -18,7 +18,7 @@ app.get("/*", (req,res)=>{return res.redirect("/")});
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, {
     cors: {
-      origin: ["https://admin.socket.io"],
+      origin: ["http://localhost:4000/"],
       credentials: true
 }});
 
