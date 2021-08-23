@@ -8,19 +8,9 @@ html(lang="en")
         title Nomad Zoom Clone
     body 
         main
-            div#welcome
-                form(action="")
-                    input(type="text", placeholder="Enter Room", required)
-                    button Enter
-                ul#roomList
-            div#message
-                h1#roomName
-                ul#messageList
-                form(action="")#nickname
-                    input(type="text", placeholder="Nickname here", required)
-                    button Save
-                form(action="")#messageForm
-                    input(type="text", placeholder="Message here", required)
-                    button Send
+            div#myStream
+                video(autoplay, playsinline, muted, width="400px", height="400px")#video
+                button#muteBtn Mute
+                button#cameraBtn Camera OFF 
         script(src="/socket.io/socket.io.js")
         script(src="/public/js/app.js") 
