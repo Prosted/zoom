@@ -9,6 +9,9 @@ const cameraSelect = stream.querySelector("#cameraSelect");
 let myStream;
 let muted = false;
 let cameraOff= false;
+let myPeerConnection;
+
+let roomName;
 
 const getCameras = async () => {
     try{
@@ -83,27 +86,43 @@ cameraSelect.addEventListener("input", handleSelect);
 
 getStream();
 
+//socketIo code
+
 const welcome = document.querySelector("#welcome");
 const call = document.querySelector("#call");
 const welcomeForm = welcome.querySelector("form");
 
 call.hidden=true;
 
-const showCall = () =>{
+const showCall = async () =>{
     welcome.hidden=true;
     call.hidden=false;
-    getStream();
+    await getStream();
+    makeConnection();
 }
 
 const handleSubmit = (event) => {
     event.preventDefault();
     const input = welcome.querySelector("input");
-    socket.emit("enter-room", input.value, showCall);
+    roomName = input.value;
+    socket.emit("enter-room", roomName, showCall);
     input.value="";
 }
 
-socket.on("welcome", ()=>{
-    console.log("someone joined");
+socket.on("welcome", async ()=>{
+    const offer=await myPeerConnection.createOffer();
+    myPeerConnection.setLocalDescription(offer);
+    console.log("sent the offer");
+    socket.emit("offer", offer, roomName);
 })
 
+socket.on("offer", (offer)=>{console.log(offer)});
+
 welcomeForm.addEventListener("submit", handleSubmit);
+
+//webRTC code
+
+async function makeConnection(){
+    myPeerConnection = await new RTCPeerConnection();
+    myStream.getTracks().forEach((track)=>(myPeerConnection.addTrack(track, myStream))); 
+}
