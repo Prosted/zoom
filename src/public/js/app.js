@@ -10,6 +10,7 @@ let myStream;
 let muted = false;
 let cameraOff= false;
 let myPeerConnection;
+let myDataChannel;
 
 let roomName;
 
@@ -115,12 +116,18 @@ const handleSubmit = async (event) => {
 }
 
 socket.on("welcome", async ()=>{
+    myDataChannel= myPeerConnection.createDataChannel("data");
+    myDataChannel.addEventListener("message", (event)=>(console.log(event.data)));
     const offer=await myPeerConnection.createOffer();
     myPeerConnection.setLocalDescription(offer);
     socket.emit("offer", offer, roomName);
 })
 
 socket.on("offer", async (offer)=>{
+    myPeerConnection.addEventListener("datachannel", (event)=>{
+        myDataChannel = event.channel;
+        myDataChannel.addEventListener("message", (event)=>(console.log(event.data)));
+    });
     myPeerConnection.setRemoteDescription(offer);
     const answer = await myPeerConnection.createAnswer();
     myPeerConnection.setLocalDescription(answer);
