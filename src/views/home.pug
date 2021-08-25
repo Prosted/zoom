@@ -14,9 +14,11 @@ html(lang="en")
                     button Enter
             div#call
                 div#myStream
-                    video(autoplay, playsinline, muted, width="400px", height="400px")#video
+                    video(autoplay, playsinline, muted, width="400px", height="400px")
                     button#muteBtn Mute
                     button#cameraBtn Camera OFF
                     select#cameraSelect  
+                div#peerStream
+                    video(autoplay, playsinline, muted, width="400px", height="400px")
         script(src="/socket.io/socket.io.js")
         script(src="/public/js/app.js") 

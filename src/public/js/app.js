@@ -1,7 +1,7 @@
 const socket = io();
 
 const stream = document.querySelector("#myStream");
-const video = stream.querySelector("#video");
+const video = stream.querySelector("video");
 const muteBtn = stream.querySelector("#muteBtn");
 const cameraBtn = stream.querySelector("#cameraBtn");
 const cameraSelect = stream.querySelector("#cameraSelect");
@@ -127,11 +127,26 @@ socket.on("answer", (answer)=>{
     myPeerConnection.setRemoteDescription(answer);
 })
 
+socket.on("ice", (ice)=>{
+    myPeerConnection.addIceCandidate(ice);
+})
+
 welcomeForm.addEventListener("submit", handleSubmit);
 
 //webRTC code
 
 async function makeConnection(){
     myPeerConnection = await new RTCPeerConnection();
+    myPeerConnection.addEventListener("icecandidate", handleIce);
+    myPeerConnection.addEventListener("addstream", handleAddStream);
     myStream.getTracks().forEach((track)=>(myPeerConnection.addTrack(track, myStream))); 
+}
+
+function handleIce(data){
+    socket.emit("ice", data.candidate, roomName);
+}
+
+function handleAddStream(data){
+    const peerFace = document.querySelector("#peerStream video");
+    peerFace.srcObject=data.stream;
 }
