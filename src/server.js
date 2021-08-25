@@ -19,13 +19,15 @@ const httpServer = http.createServer(app);
 const io = SocketIO(httpServer);
 
 io.on("connect", (socket)=>{
-    socket.on("enter-room", (roomName, done)=>{
+    socket.on("enter-room", (roomName)=>{
         socket.join(roomName);
-        done();
         socket.to(roomName).emit("welcome");
     });
     socket.on("offer", (offer, roomName)=>{
         socket.to(roomName).emit("offer", offer);
+    })
+    socket.on("answer", (answer, roomName)=>{
+        socket.to(roomName).emit("answer", answer);
     })
 })
 
